@@ -1,0 +1,220 @@
+======================= Azure e termos Cloud =======================
+-- IaaS : Infraestrutura como serviço:
+Definição: IaaS é um modelo de serviço em nuvem que fornece recursos de infraestrutura
+virtualizados pela internet, como servidores, armazenamento, redes e sistemas operacionais.
+Exemplo: Azure Virtual Machines, AWS EC2.
+Uso: Ideal para empresas que desejam controle total sobre a infraestrutura.
+
+-- PaaS (Platform as a Service):
+Definição: PaaS é um modelo de serviço em nuvem que fornece uma plataforma
+gerenciada, permitindo que desenvolvedores criem, gerenciem e implantem aplicativos
+sem se preocupar com a infraestrutura subjacente.
+Exemplo: Azure App Service
+Uso: Usado por desenvolvedores para criar aplicativos rapidamente, aproveitando ambientes
+pré-configurados e serviços integrados, como bancos de dados, autenticação e monitoramento.
+
+--  SaaS (Software as a Service):
+Definição: SaaS é um modelo de serviço em nuvem onde aplicativos de software são entregues
+via internet, acessíveis através de um navegador ou aplicativo cliente.
+Exemplo: Microsoft 365.
+Uso: Empresas utilizam SaaS para acesso fácil e manutenção reduzida de software, com 
+atualizações e segurança gerenciadas pelo fornecedor.
+
+
+-- CaaS (Container as a Service):
+Definição: CaaS é um serviço em nuvem que fornece ferramentas e infraestrutura para 
+gerenciar, implantar e executar contêineres de software.
+Exemplo: Azure Kubernetes Service (AKS).
+Uso: Facilita a orquestração e escalabilidade de aplicativos baseados em contêineres, ideal 
+para ambientes DevOps com microserviços.
+
+
+Serviços fornecidos p/ containers PaaS - Plataforma as a Service:
+ACR - Azure container History, concorrente do Docker HUB
+|
+|--> Usamos p/ registrar nossas imagens efetuando pull p/ nosso ambiente de dev e prod.
+	 Hospedamos nossas imagens no ACR de modo privado e pode ser integrado com o serviços de AKS 
+
+ACI - Azure container Instance, facilita o trabalho p/ subir instancias de imgs de container
+|
+|--> Não tem a necessidade de provisionar e gerenciar VMs ou algum recurso adicional, usado pra
+| 	 ambiente ñ produtivo como ambiente de dev e testes. 
+|--> Controle sob seu uso e quantia de usuarios que pode acessa-lo
+
+AKS - Azure kubernets Service, ele que mais uso, na realidade uso ele, ele gerencia os clusters kubernets
+|
+|--> Na realidade existe um termo novo para o os serviços de containers providos pelas clouds que é o CaaS
+	 CaaS é --> Containers as a service, ideial para ambiente microserviços
+
+
+
+--- Serviços Fornecidos: ---
+
+1- Storage:
+2- Security:
+3- IA Machine learning:
+4- Banco:
+5- Rede:
+6- VM:
+7- Compute: recursos como VMs, 
+8- Containers:
+
+
+[ Regiões ]
+Uma região do azure é um conjunto de Data Centers implatados dentro de um perimetro
+A latência é definida e são conectados por meio de um rede regional dedicados de baixa latência
+
+Uma observação importante é que coloquemos nossos serviços na localização geográfica para aqueles
+que estão consumindo, porém sua conta não fica presa a uma só região, você pode expalhar seus serviços 
+por todo globo.
+
+
+[ Resouce Groups ]
+É um grupo de recursos, os recursos no AZURE são os serviços, exemplo: VM, WEB SERVICE, etc
+						------------------------------------		   ---------------------
+* Os resources groups são de extrema importancia pois são necessários para organição e controle, como:
+
+Empresa XY
+		|-->Possui DP Financeiro
+				|--> DP Financeiro necessita de ferramentas/serviços especificos só dele
+						|--> É provisionado serviços especificos ao Resouce Group do DP Fin.
+
+[ Como é criado um Resouce Group? ]
+1 - Cria-se primeiro uma "Azure subscription"
+2 - Dentro da Azure subscription criamos um Resouce Group 
+3 - Dentro do resouce group disponibilizo os recursos
+
+[ Regras de um Resouce Group ]
+* Recursos no RG devem compartilhar o mesmo ciclo de vida, ou seja, se excluirmos um RG excluimos todos os Recursos.
+* Um usuário pode pertencer a mais de um perfil, já um recurso não, um recurso só pode pertencer a um RG.
+* Recursos podem ser transferidos entre os Grupos de Recursos, ou seja, eles pode ser migrados entre os RG
+* RG podem ter Recursos de diferentes regiões, sou seja, podemos ter uma VM rodando no Brasil e outra nos USA no mesmo RG
+* Recursos podem interagir com outros recursos em outros de outros RG
+
+[ Tipos de Controles ]
+
+4 mecanismos de controle:
+ 
+1- IAM:
+|--> Sistema de controle de identidades do azure, é um  controle de acesso ao AZURE, é tipo um AD
+
+2- Tags:
+|--> Serve para você taguear, para você marcar, por exemplo, aquele grupo de recurso referente a sua Aplicação
+
+3- LOCKS:
+|--> Funciona como bloqueio, por exemplo você pode adicionar um lock que impeça uma exclusão acidental, util caso tenha mais de um 
+usuário operando no mesmo grupo de diretórios do Azure
+
+4- POLICES:
+|--> Pense como uma entidade do Azure que controla determinados tipo de comportamentos
+
+
+[ Criar e Excluir um RG no azure ]
+Como dito, todo recurso e serviço no Azure precisa estar dentro de um RG, por isso devemos cri-los
+
+1 - Criar um RG:
+Na guias dos favoritos exites "Resouce Groups" ou em "All services" ou você pode digitar no pesquisa por "resouce groups"
+|
+|--> "Create resouce group"
+		|
+		|--> Escola sua Subscrição em "subscription"
+					|
+					|--> De um nome ao seu RG, como: "PrimeiroRG"
+							|
+							|--> Selecione sua região, como: "Brasil south", clique em next
+
+2 - Adicionar Tags:
+Usado para categorizar nosso RG e podemos criar quantas achar necessárias
+|
+|--> P/ esse exemplo daremos o nome de "ambiente" e value "desenvolvimento"	
+		|--> Clicar em "Next Review + create >", após revisar pode clicar em "create"
+		
+* Obs: La embaixo existe um link "Download template for automation":
+Ai nessa pagina teremos o template(script) os parameters e Scrips que é onde podemos trabalhar com Power Shel ou Azure CLI
+Podemos baixar e também adicionar a nossa biblioteta de RM templates
+
+3 - Exluir um RG:
+Apesar de um RG não ter custo, os recursos adicionados a ele tem e por isso devemos remover após os estudos
+
+Para excluir clique em "Delete resource group"
+							|--> Clicar no RG
+								|--> "Delete resource group"
+									|--> "Are you sure you want to delete "nomedoRG"" 
+										|--> no campo "TYPE THE RESOURCE GROUP NAME:" repita o nome do RG e depois clique em delete
+					
+[ Habilitando Novas assinaturas no Azure ]
+Usado quando expirar os créditos do azure ou período de experimentação do Azure
+1 - É habilitado uma nova subscription do tipo 	Pay-As-You-Go
+Ir em pesquisa e "subscription"
+		|
+		|--> Clicar em Add e escolher  "Pay-As-You-Go"
+				|
+				|--> A pagina vai mudar como se estivesse criando uma nova conta
+						|
+						|--> Escolha  "No technical suport..." para não ser cobrado e clique em "Sign up"
+
+ 
+
+[ Formas de deploy p/ serviços baseados em Containers ] 
+
+1-Forma manual e mais usada: 
+	|--> É feita através do portal do Azure
+	
+2-Com Power Shell
+	|--> Semelhate a Bash linux só que pra Windows
+	
+3-Azure CLI
+	|--> Interface de linha de comando do Azure
+	
+4-Azure Cloud Shell
+	|--> Shell interativo usado no navegador, onde você pode escolher o que mais gosta de trabalhar 
+	
+5-Azure Resouce Managet (ARM)
+	|--> É a infraestrutura como código propriamente dita, baseada em json e todo serviço que geramos 
+		 no Azure através do portal sempre é gerado um script do tipo ARM
+
+6- Terraform
+	|--> É uma ferramenta de deploy multiprovider e um deles é o Azure
+	
+7- Também podemos fazer deploy atráves de requisições WEST API
+
+* Tanto o "ARM" quanto o "Terraform" podem ser utilizados com a ferrementas de Integração  e Entrega Continua
+  Como por exemplo o Azure "DevOps", além disso, os scripts do Azure CLI e power Shell também pode ser exec. no Azure DevOps
+* Ou seja, umas das ferramentas mais usadas em um deploy é o Azure DevOps
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+						
+																
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
