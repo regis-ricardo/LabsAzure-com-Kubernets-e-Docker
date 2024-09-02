@@ -1,0 +1,318 @@
+Parte 1: Script Bash/Python para Monitoramento de Processo
+ Passo 1: Preparar o Script
+  Você pode escolher entre um script em Bash ou Python. Vou explicar os dois.
+
+Em Bash:
+
+1 - Abra um editor de texto no seu computador (como o Notepad++ ou o terminal no Linux/Mac).
+2 - Copie e cole o seguinte código:
+
+#!/bin/bash
+
+if [ -z "$1" ]; then
+  echo "Uso: $0 <process_name_or_pid>"
+  exit 1
+fi
+
+while true; do
+  if ps -p $1 > /dev/null; then
+    CPU=$(ps -p $1 -o %cpu=)
+    MEM=$(ps -p $1 -o %mem=)
+    echo "CPU: $CPU%, MEM: $MEM%"
+  else
+    echo "Processo $1 não encontrado."
+    exit 1
+  fi
+  sleep 5
+done
+
+3 - Salve o arquivo como monitor.sh.
+
+-----------------------------------------
+
+Em Python:
+
+1 - Abra um editor de texto.
+2 - Copie e cole o seguinte código:
+
+-- Em python
+import sys
+import time
+import psutil
+
+if len(sys.argv) < 2:
+    print("Uso: python monitor.py <process_name_or_pid>")
+    sys.exit(1)
+
+process_identifier = sys.argv[1]
+
+try:
+    process = psutil.Process(int(process_identifier))
+except ValueError:
+    process = None
+    for proc in psutil.process_iter(['pid', 'name']):
+        if process_identifier == proc.info['name']:
+            process = psutil.Process(proc.info['pid'])
+            break
+
+if not process:
+    print(f"Processo {process_identifier} não encontrado.")
+    sys.exit(1)
+
+while True:
+    cpu_usage = process.cpu_percent(interval=1)
+    memory_info = process.memory_info().rss / (1024 * 1024)
+    print(f"CPU: {cpu_usage}%, MEM: {memory_info:.2f}MB")
+    time.sleep(4)
+
+3 - Salve o arquivo como monitor.py.
+
+
+-----------------------------------------
+
+Passo 2: Configurar e Executar no Azure
+
+1. Acessar o Portal Azure:
+
+ Acesse portal.azure.com
+ Faça login com sua conta.
+
+2. Criar uma VM no Azure para rodar o script:
+
+ No portal, vá até o menu e escolha "Máquinas Virtuais".
+ Clique em "Criar" > "Máquina Virtual".
+ Escolha as configurações básicas (nome, região, tamanho da VM). Se você não sabe, pode deixar as opções padrão.
+ Para o sistema operacional, escolha uma imagem Linux (como Ubuntu).
+ Configure a autenticação e crie a VM.
+
+3. Conectar na VM:
+
+ Após a VM ser criada, acesse-a via SSH. No portal Azure, você verá um botão "Conectar". Siga as instruções para conectar via SSH.
+ Exemplo de comando SSH (no terminal do seu computador):
+
+-- No bash
+ssh <seu_usuario>@<endereço_IP_da_VM>
+
+
+4. Fazer Upload do Script para a VM:
+
+ No terminal local, use scp (ou uma ferramenta similar) para enviar o script para a VM.
+ Exemplo de comando scp:
+
+-- No bash
+scp monitor.sh <seu_usuario>@<endereço_IP_da_VM>:~/
+
+
+-- Ou Ou para Python:
+scp monitor.py <seu_usuario>@<endereço_IP_da_VM>:~/
+
+
+5. Executar o Script:
+
+ Para Bash: Torne o script executável e rode:
+
+chmod +x monitor.sh
+./monitor.sh <nome_do_processo_ou_PID>
+
+
+ Para Python: Instale a biblioteca psutil e execute o script:
+
+sudo apt-get update
+sudo apt-get install python3-pip
+pip3 install psutil
+python3 monitor.py <nome_do_processo_ou_PID>
+
+
+Parte 2: Docker para Aplicação Web com Flask
+Passo 1: Criar os Arquivos do Projeto
+
+Crie uma pasta de trabalho no seu computador, chamada flask_app.
+Dentro dessa pasta, crie os seguintes arquivos:
+Dockerfile:
+
+# Usar a imagem base oficial do Python
+FROM python:3.9-slim
+
+# Definir o diretório de trabalho dentro do contêiner
+WORKDIR /app
+
+# Copiar os arquivos de dependências e instalar
+COPY requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copiar o restante do código da aplicação
+COPY . .
+
+# Definir a variável de ambiente para que o Flask possa ser executado
+ENV FLASK_APP=app.py
+
+# Expor a porta que o Flask usará
+EXPOSE 5000
+
+# Comando para rodar a aplicação Flask
+CMD ["flask", "run", "--host=0.0.0.0"]
+
+
+
+-- requirements.txt:
+Flask==2.0.1
+
+
+-- app.py:
+python
+
+
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Olá, Azure! Sua aplicação Flask está rodando dentro de um contêiner Docker."
+
+if __name__ == "__main__":
+    app.run(debug=True, host='0.0.0.0')
+
+
+
+Passo 2: Configurar Docker no Azure
+
+Instalar o Docker na VM do Azure:
+
+Conecte-se à VM (como feito anteriormente).
+
+Execute os comandos para instalar o Docker:
+sudo apt-get update
+sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt-get update
+sudo apt-get install docker-ce
+
+
+
+Verifique a instalação:
+
+# docker --version
+
+2. Enviar os arquivos do projeto para a VM:
+
+Use scp novamente para enviar a pasta flask_app para a VM:
+
+# scp -r flask_app <seu_usuario>@<endereço_IP_da_VM>:~/
+
+
+3. Construir a Imagem Docker:
+No terminal da VM, navegue até a pasta flask_app:
+
+# cd ~/flask_app
+
+Construa a imagem Docker:
+docker build -t flask-app .
+
+
+4. Rodar o Contêiner:
+Execute o contêiner com o comando:
+# docker run -p 5000:5000 flask-app
+
+5. Acessar a Aplicação:
+Execute o contêiner com o comando:
+
+http://<endereço_IP_da_VM>:5000
+
+
+
+Você deverá ver a mensagem: "Olá, Azure! Sua aplicação Flask está rodando dentro de um contêiner Docker.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
