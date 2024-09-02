@@ -5,6 +5,10 @@
 3-Instalar o GIT
 --------
 
+
+
+======= Azure CLI =====
+
 [ Azure CLI ]
 Ele é a experiencia de gerenciamento de linha de comando da plataforma cruzada da Microsoft 
 p/ o gerenciamento de recursos do Azure, formas de uso:
@@ -59,15 +63,15 @@ az account set --subscription "Nome ou ID da Assinatura"
 |--> Isso garante que todos os comandos subsequentes da CLI serão executados dentro do contexto da assinatura selecionada.
 
 # Tudo no Azure fica em um RG e para isso devemos cria-lo
-az group create
---location brazilsouth
---resource-group RG --> indica que estamos dando o nome RG ao grupo
+az group create --location brazilsouth --resource-group RG 
+														 |--> indica que estamos dando o nome RG ao grupo
 
 # Cria uma VM Linux Ubuntu no azure dentro de um RG
-az vm create
--n vm-linux         --> da um nome a VM
--g RG               --> Diz que ficará no grupo RG   
---image UbuntoLTS   --> Diz que será do tipo Ubuntu
+az vm create -n vm-linux-ubuntu -g RGAZCLI --image Ubuntu2204 --generate-ssh-keys
+-n vm-linux-ubuntu         --> da um nome a VM
+-g RGAZCLI              --> Diz que ficará no grupo RG   
+--image Ubuntu2204   --> Diz que será do tipo Ubuntu
+--generate-ssh-keys  --> Gera um par de chaves SSH ping 
 
 # P/ iniciar/parar uma Maquina virtual:
 az vm start ou az vm stop ou az vm restart
@@ -91,7 +95,7 @@ Preservação de Dados: O disco do sistema operacional e os discos de dados cone
 
 
 # Deletar uma Vm
-az vm delete --resource-group RG --name vm-linux
+az vm delete --resource-group RG --name vm-linux-ubuntu
 
 # Listar VM
 az vm list
@@ -149,6 +153,8 @@ az group show -n RGAZCLI
 
 
 
+======= Windows PowerShell =====
+
 
 # Verificando a versao do PowerShell
 $PSVersionTable.PSVersion
@@ -159,13 +165,26 @@ Install-Module -Name Az -Repository PSGallery -Force
 # Conectando a nossa conta do Azure ao Powershell
 Connect-AzAccount -UseDeviceAuthentication
 
+
+# Conferir a conta que esta autenticada
+Get-AzContext
+
 # Criando Resource Group no Azure Powershell
 New-AzResourceGroup -Name RGPOWERSHELL -Location "BrazilSouth"
+
+# Listar dos Resource Groups 
+Get-AzResourceGroup
 
 # Removendo Resource Group no Azure Powershell
 Remove-AzResourceGroup -Name RGPOWERSHELL
 
 
+
+======= Visual studio Code =====
+Após instalado devemos instalar suas extenções:	
+
+1- Clique no icone de extensions ao seu lado esquerdo, ele é um de barra de cubos com um quadrado se soltando
+2- Na sua barra de pesquisa, procure por Azure e instale: Azure tools
 
 
 
