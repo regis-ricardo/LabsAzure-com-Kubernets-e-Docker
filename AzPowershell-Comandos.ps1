@@ -95,7 +95,12 @@ Preservação de Dados: O disco do sistema operacional e os discos de dados cone
 
 
 # Deletar uma Vm
-az vm delete --resource-group RG --name vm-linux-ubuntu
+Quando você cria uma vm você cria vários resouces dentro do seu RG e pra remover todos você deve remover o RG ou entrar via web selecionar um por um e pedir pra deletar.
+Alén disso também é criado automaticamente um outro RG p/ rede dessa vm, chamado "NetworkWatcherRG" 
+
+az vm delete --resource-group <nome-do-RG> --name <nome da vm>
+ou
+az group delete --name NetworkWatcherRG --yes --no-wait ---> p/ não pedir confirmação
 
 # Listar VM
 az vm list
@@ -116,12 +121,13 @@ MaxIOPS: #Máximo de operações de entrada/saída por segundo (IOPS) que o disc
 #Formatação da Saída:
 A saída é, por padrão, em formato JSON, mas você pode formatar a saída para torná-la mais legível:
 
+# lista os tamanhos de máquinas virtuais (VMs) disponíveis para uma determinada região no Azure (eastus p/ região Leste dos EUA) 
 --Tabela: Para exibir em formato tabular
 az vm list-sizes --location eastus --output table
 
+
 -- CSV: Para exportar os dados em formato CSV
 az vm list-sizes --location eastus --output csv
-
 
 
 [ Lab teste de criação de ambientes com comando Azure CLI ]
@@ -184,9 +190,123 @@ Remove-AzResourceGroup -Name RGPOWERSHELL
 Após instalado devemos instalar suas extenções:	
 
 1- Clique no icone de extensions ao seu lado esquerdo, ele é um de barra de cubos com um quadrado se soltando
-2- Na sua barra de pesquisa, procure por Azure e instale: Azure tools
+2- Na sua barra de pesquisa, procure por Azure e instale: Azure tools, azure account, 
 
 
+======= Docker Básico =====
+Containers docker, docker hub e docker compose:
 
+-- Principais comandos básicos:
+
+# mostra versão do docker
+docker version
+
+# mostra as imagens 
+docker images list
+docker images
+
+# procurar um parametro
+docker search <parametro>
+
+# trazer uma imagem para nossa máquina
+docker image pull <imagem>
+Ex:
+docker pull hello-world
+ 
+# Rodar a imagem baixada
+docker run <nome-imagem>, ex
+docker run hello-world
+|--> ela roda e morre
+
+
+# Rodar em uma porta especifica
+docker run -it -p 8080:80 nginx
+
+# verificar como como esta o container
+docker ps
+
+# verificar inclusive containers que ja morreram:
+docker ps -a --> exemplo ver os containers que rodaram e morreram 
+
+# inspencionar a nossa imagem:
+docker inspect <id ou alias>
+
+#deletar um container que esta parado/morto
+Apos o "docker ps -a", pegado o CONTAINER ID e executamos o comando abaixo:
+docker rm 9c52fb02d773	
+			|---> ID do container que pegamos no docker ps -a 
+
+# Deletar uma imagem
+docker rmi <imagem>
+
+# executar um comando dentro do container
+docker exec <id ou nome>
+
+# Iniciar/parar um comando que paramos
+docker start/stop <id do container>
+
+
+#rodar uma imagem de forma deatachada -d e interativa -it (exec comandos shell)
+docker run -it -d ubuntu 
+
+#pegar o ID do container rodando
+docker ps
+
+# Entrar no modo bash
+docker exec -it <id-container> bash
+
+
+# Expor uma aplicação na porta 80
+Procupar no site do docker hub a imagem yeasy/simple-web
+
+docker run --rm -it -p 8022:80 yeasy/simple-web:latest
+
+--rm
+O que faz: Esta opção diz ao Docker para remover automaticamente o contêiner assim que ele for interrompido ou encerrado.
+
+-it
+-i (interativo): Mantém o STDIN (entrada padrão) aberto, permitindo que você interaja com o contêiner.
+-t (tty): Aloca um terminal TTY, o que permite uma interface de linha de comando interativa. Juntos, -it permitem que você interaja com o contêiner diretamente, como se estivesse usando um terminal.
+
+-p 8022:80
+Este parâmetro mapeia a porta do contêiner para uma porta no host.
+8022 é a porta no host (seu computador).
+80 é a porta no contêiner (onde o serviço web está rodando).
+Isso significa que qualquer solicitação enviada para localhost:8022 no seu computador será redirecionada para a porta 80 do contêiner
+
+yeasy/simple-web:latest
+yeasy/simple-web é o nome da imagem Docker . Esta imagem contém uma aplicação web simples.
+:latest especifica a tag da imagem, latest refere-se à versão mais recente da imagem disponível
+
+Após isso pode acessar a aplicação através do link: http://localhost:8022/
+
+############# Docker File #############
+1 - criar uma imagem
+2 - Criar o docker File
+
+
+1 - Procurar pela imagem do nginx no docker hub
+No site após achar a imagem nós veremos como usar a imagem do docker file, ex. de como estará no site:
+
+Alternatively, a simple Dockerfile can be used to generate a new image that...
+
+FROM nginx
+COPY static-html-directory /usr/share/nginx/html
+
+
+# Criar pra organizar um pasta chamada DockerContainer em:
+D:\Entrevistas-e-Labs-de-entrevistas\LabsAzure-com-Kubernets-e-Docker\DockerContainer
+
+Dentro deste diretório baixe o zip "https://github.com/higorbarbosa/SiteHTML-Treinamento" e extraia todo conteundo aqui dentro
+
+Criar um arquivo chamado dockerfile  e dentro dele inserir:
+
+FROM nginx
+COPY . /usr/share/nginx/html
+
+Abrir o terminal do VS Code modo com bash 
+
+Navegue  até o dir do DockerContainer e dentro dele execute o comando:
+docker build -t site-nginx .
 
 
