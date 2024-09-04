@@ -96,10 +96,11 @@ Preservação de Dados: O disco do sistema operacional e os discos de dados cone
 
 # Deletar uma Vm
 Quando você cria uma vm você cria vários resouces dentro do seu RG e pra remover todos você deve remover o RG ou entrar via web selecionar um por um e pedir pra deletar.
-Alén disso também é criado automaticamente um outro RG p/ rede dessa vm, chamado "NetworkWatcherRG" 
+Além disso também é criado automaticamente um outro RG p/ rede dessa vm, chamado "NetworkWatcherRG" 
 
 az vm delete --resource-group <nome-do-RG> --name <nome da vm>
 ou
+# Deletar um grupo RG
 az group delete --name NetworkWatcherRG --yes --no-wait ---> p/ não pedir confirmação
 
 # Listar VM
