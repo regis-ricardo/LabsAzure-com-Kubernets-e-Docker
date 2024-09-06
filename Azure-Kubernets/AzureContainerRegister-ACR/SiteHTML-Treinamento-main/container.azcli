@@ -1,0 +1,23 @@
+# Login no azure
+az login
+
+# Build da imagem localmente
+docker build -t site-html . 
+
+# Login no ACR --name < nome do "Container Registry" - Ps (tem que ser criado antes, pesquise por ele no portal e crie!!)
+az acr login --name acrcontainersapps
+
+# Tag da imagem local - Renomeia a imagem site-html para prepará-la para ser enviada ao Azure Container Registry
+docker tag site-html acrcontainersapps.azurecr.io/site-html
+
+# Push para ACR
+docker push acrcontainersapps.azurecr.io/site-html
+
+# Pull do ACR para maquina Local
+docker pull acrcontainersapps.azurecr.io/site-html
+
+# Rodar a imagem na porta 8880
+docker run -d -p 8880:80 acrcontainersapps.azurecr.io/site-html
+
+# Listar os container 
+docker container ls 
