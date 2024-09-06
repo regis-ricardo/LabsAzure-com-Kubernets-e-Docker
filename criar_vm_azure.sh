@@ -10,7 +10,7 @@ az vm create \
   --location brazilsouth \
   --image Ubuntu2204 \
   --admin-username regis \
-  --admin-password W9b4n7i5!@#$% \
+  --admin-password ************** \
   --authentication-type password \
   --size Standard_B1s \
   --public-ip-sku Standard \
