@@ -26,6 +26,7 @@ az login --use-device-code --> efetua o login sem navegador
 	|--> Exemplo de saída:"To sign in, use a web browser to open the page https://microsoft.com/devicelogin and enter the code ABCD-EFGH to authenticate."
 
 az login --service-principal -u <ID-do-Cliente> -p <Senha-Secreta> -t <ID-do-tenant>
+|
 |--> "--service-principal": Indica que o login será feito usando uma Principal de Serviço, em vez de um usuário comum
 |--> "-u" <ID-do-Cliente>: Substitua <ID-do-Cliente> pelo ID do Cliente (Client ID) da Principal de Serviço
 |--> "-p" <Senha-Secreta>: Substitua <Senha-Secreta> pela senha secreta (Client Secret) associada à Principal de Serviço
@@ -295,7 +296,7 @@ FROM nginx
 COPY static-html-directory /usr/share/nginx/html
 
 
-# Criar pra organizar um pasta chamada DockerContainer em:
+# Criar uma pasta chamada DockerContainer pra organizar em:
 D:\Entrevistas-e-Labs-de-entrevistas\LabsAzure-com-Kubernets-e-Docker\DockerContainer
 
 Dentro deste diretório baixe o zip "https://github.com/higorbarbosa/SiteHTML-Treinamento" e extraia todo conteundo aqui dentro

@@ -168,21 +168,52 @@ Ir em pesquisa e "subscription"
 	
 4-Azure Cloud Shell
 	|--> Shell interativo usado no navegador, onde você pode escolher o que mais gosta de trabalhar 
-	
-5-Azure Resouce Managet (ARM)
-	|--> É a infraestrutura como código propriamente dita, baseada em json e todo serviço que geramos 
-		 no Azure através do portal sempre é gerado um script do tipo ARM
+	_
+|__/5-Azure Resouce Managet (ARM)
+|	|--> É a infraestrutura como código propriamente dita, baseada em json e todo serviço que geramos 
+|		 no Azure através do portal sempre é gerado um script do tipo ARM
+|   _
+|__/6- Terraform
+|	|--> É uma ferramenta de deploy multiprovider e um desses multiproviders é o Azure -----------> Mais Usado Estudar muito isso <-----------
+|	
+| 7- Também podemos fazer deploy atráves de requisições WEST API
+|
+|--> * Tanto o "ARM" quanto o "Terraform" podem ser utilizados com a ferrementas de Integração e Entrega Continua <------------ Muito Importante pra caixa
+       Como por exemplo o Azure "DevOps", além disso, os scripts do Azure CLI e power Shell também pode ser exec. no Azure DevOps
+    * Ou seja, umas das ferramentas mais usadas em um deploy é o Azure DevOps
+																|
+																|---> "Dar atenção especial pois é usado na caixa"
+																
+																
+[ Ferramentas de Gerenciamento ]
 
-6- Terraform
-	|--> É uma ferramenta de deploy multiprovider e um deles é o Azure
-	
-7- Também podemos fazer deploy atráves de requisições WEST API
-
-* Tanto o "ARM" quanto o "Terraform" podem ser utilizados com a ferrementas de Integração  e Entrega Continua
-  Como por exemplo o Azure "DevOps", além disso, os scripts do Azure CLI e power Shell também pode ser exec. no Azure DevOps
-* Ou seja, umas das ferramentas mais usadas em um deploy é o Azure DevOps
+AZ CLI
+Az Power Shell
+AZ Cloud Shell
 
 
+-- AZ CLI --
+    [ Gerenciar Serviços e Recursos a partir de Comandos Az CLI ]
+	Pode ser instalado no Windows, e Linux
+	Pode ser usado no Azure Cloud Shell também
+- Formato:
+az <command> <subcommand> <parameters>
+
+Ex:
+az vm list --resource-group RG --output table
+		|
+		|---> Lista todas as VMs na assinatura onde estamos logados, no Grupo de recursos de nome "RG" e mostra no formato de tabela
+		
+
+       	
+
+
+
+
+
+
+
+-- Az Power Shell --
 
 
 
@@ -191,8 +222,7 @@ Ir em pesquisa e "subscription"
 
 
 
-
-
+-- AZ Cloud Shell --
 
 
 

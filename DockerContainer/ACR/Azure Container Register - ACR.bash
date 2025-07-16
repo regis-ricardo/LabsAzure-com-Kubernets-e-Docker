@@ -150,14 +150,36 @@ Deployment Center
 	
  
 	
+==================================== Kubernets =========================================
+Componentes:
+Kubernets se divide em 4 pontos 
+1º Precisamos ter um ou mais cluster no nosso Kubernets
+								|
+								|--> Conjunto de componets que são: Master, nodes, pods, containers
+							  
+--ETCD: É o banco de dados do kubernets, responsavel pelo armazenamento de alta disponibilidade das informeçoes
+--KUBELET: É o agent executado em cada um dos nodes de um WORKER, ele tem a responsabilidade de realizar as modificações
+			dos containers, como: Criação, modificação, execução e exclusão dos containers * TODOS OS NODES DEVEM TER UM KUBELET 
+            É o kubelet quem cria um pod e deixando pronto p/ o nosso container fora isso ele também testa e verifica a sua saúde.
 
+---Temos varias tipos de PODs:
+*Replicaset: pod default, respo-nsável por manter um número estavel de pod em funcionamento a todo momentos
+-Número de réplicas (spec.replicas): Define quantos pods devem estar rodando.
+-Template do Pod (spec.template): Especifica o modelo de pod que será replicado, incluindo a definição do contêiner, imagem, portas, volumes, etc.
+-Selector (spec.selector): Identifica os pods que pertencem ao ReplicaSet com base em rótulos (labels).
 
-
-
+*Deploymets: O Deployment cria e gerencia ReplicaSets, que por sua vez controlam os pods
+Em resumo, o Deployment é responsável por orquestrar as atualizações e escalabilidade 
+dos pods, enquanto o ReplicaSet se encarrega de garantir que o número correto de pods esteja sempre ativo
 	
 
-
-
+--------------------------------------------------------------
+[ Criando um Cluster no Portal ] 
+No portal pesquise por "Kubernets services"
++ Create ---- Kubernet Cluster
+|--> Subscription* Free Trial
+|--> Resouce group ---> create new e dar o nome "rg-aks-portal"
+|-->Cluster details Cluster preset configuration* 
 
 
  

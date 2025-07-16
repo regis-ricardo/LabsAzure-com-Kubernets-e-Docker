@@ -93,8 +93,8 @@ CPU: 0.0%, MEM: 5.33MB
  No portal, vá e pesquisa e pesquise por ubuntu (escolhi Ubuntu Server 20.04 LTS)
  Clique em "create" 
  Subscription*   Fre Trial (p/ meu caso pois criei uma conta para esse desafio)
- Resource group* --> clique em "Create new" (pois não criei um anteriormente e dê um nome (nome ---> lab-desafio-docker))
- Virtual machine name --> lab-desafio-docker
+ Resource group* --> clique em "Create new" (pois não criei um anteriormente e dê um nome (nome ---> RG-lab-desafio-docker))
+ Virtual machine name --> lab-desafio
  Region		(South America) Brazil South
  Availability options Availability zone
  Security type standard (pois é pra lab)
@@ -132,7 +132,7 @@ Para Python: Instale a biblioteca psutil e execute o script python:
 
 sudo apt-get update
 sudo apt-get install python3-pip
-pip3 install psutil
+  
 
 python3 monitor.py <nome_do_processo_ou_PID>
 
@@ -149,7 +149,7 @@ sudo apt-get install apt-transport-https ca-certificates curl software-propertie
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 sudo apt-get update
-sudo apt-get install docker-ce
+sudo apt-get install docker-ce -y 
 
 
 
